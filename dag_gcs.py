@@ -18,6 +18,7 @@ gcs_file = "{{ dag_run.conf['name'] }}"
 run_this = "echo " + gcs_file
 
 task1 = GCSToBigQueryOperator(
+        dag=dag,
         task_id="load_trans_data",
         bucket="<update-bucketname>",
         source_objects=[gcs_file],
@@ -37,6 +38,7 @@ task1 = GCSToBigQueryOperator(
 )
 
 task2 = BigQueryInsertJobOperator(
+          dag=dag,
           task_id='call_sp_to_processdata',
           configuration={
           "query": {
